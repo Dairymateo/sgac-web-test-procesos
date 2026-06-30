@@ -1,0 +1,68 @@
+/* Estilos para UnderConstructionPage.css */
+.under-construction-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 2rem;
+    background-color: var(--color-background);
+}
+
+.under-construction-card {
+    background: white;
+    padding: 3rem;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    border: 1px solid var(--color-border);
+}
+
+.under-construction-card .icon-wrapper {
+    background: var(--color-background);
+    color: var(--color-primary);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.under-construction-card h2 {
+    color: var(--color-text);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.under-construction-card .status-badge {
+    background: #eef2ff;
+    color: var(--color-primary);
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.under-construction-card p {
+    color: var(--color-text-light);
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.under-construction-card .sub-text {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+}

@@ -1,0 +1,6643 @@
+openapi: 3.0.3
+info:
+  title: SGAC API
+  version: 1.0.0
+  description: SGAC backend API documentation
+paths:
+  /api/auth/change-password/:
+    post:
+      operationId: auth_change_password
+      description: Allows the authenticated user to change their password.
+      tags:
+      - authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangePasswordResponse'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/auth/login/:
+    post:
+      operationId: auth_login
+      description: Logs in and returns JWT tokens together with the authenticated
+        user.
+      tags:
+      - authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+  /api/auth/logout/:
+    post:
+      operationId: auth_logout
+      description: Logs out by invalidating the provided refresh token.
+      tags:
+      - authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutResponse'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/auth/me/:
+    get:
+      operationId: auth_me
+      description: Returns the authenticated user's profile.
+      tags:
+      - authentication
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/auth/token/refresh/:
+    post:
+      operationId: auth_refresh_token
+      description: Generates a new access token from a valid refresh token.
+      tags:
+      - authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenResponse'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+  /api/claims/management/:
+    get:
+      operationId: claims_list
+      description: Lists registered claims.
+      tags:
+      - claims
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClaimRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/claims/management/{claim_id}/:
+    get:
+      operationId: claims_detail
+      description: Returns claim details by ID.
+      parameters:
+      - in: path
+        name: claim_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - claims
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/claims/management/{claim_id}/activate/:
+    patch:
+      operationId: claims_activate
+      description: Activates a claim by ID.
+      parameters:
+      - in: path
+        name: claim_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - claims
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedClaimReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedClaimReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedClaimReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/claims/management/{claim_id}/deactivate/:
+    patch:
+      operationId: claims_deactivate
+      description: Deactivates a claim by ID.
+      parameters:
+      - in: path
+        name: claim_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - claims
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedClaimReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedClaimReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedClaimReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/claims/management/{claim_id}/documents/{document_id}/url/:
+    get:
+      operationId: claims_document_url
+      description: Generates a temporary URL to preview a claim document.
+      parameters:
+      - in: path
+        name: claim_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: document_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - claims
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          description: No response body
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/claims/management/{claim_id}/partial-update/:
+    patch:
+      operationId: claims_partial_update
+      description: Partially updates a claim (PATCH). Allows managing documents in
+        the same request.
+      parameters:
+      - in: path
+        name: claim_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - claims
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedClaimUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedClaimUpdateRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedClaimUpdateRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/claims/management/{claim_id}/report-to-insurer/:
+    post:
+      operationId: claims_report_to_insurer
+      description: Sends a claim report email to the insurer claims executive.
+      parameters:
+      - in: path
+        name: claim_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - claims
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/claims/management/{claim_id}/update/:
+    put:
+      operationId: claims_update
+      description: Fully updates a claim (PUT). Allows managing documents in the same
+        request.
+      parameters:
+      - in: path
+        name: claim_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - claims
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClaimUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ClaimUpdateRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimUpdateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/claims/management/create/:
+    post:
+      operationId: claims_create
+      description: Creates a new claim. Supports creating documents in the same request.
+      tags:
+      - claims
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClaimCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ClaimCreateRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/customers/management/:
+    get:
+      operationId: customers_list
+      description: Lists registered customers.
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/customers/management/{customer_id}/:
+    get:
+      operationId: customers_detail
+      description: Returns customer details by ID.
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/customers/management/{customer_id}/activate/:
+    patch:
+      operationId: customers_activate
+      description: Activates a customer by ID.
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/customers/management/{customer_id}/deactivate/:
+    patch:
+      operationId: customers_deactivate
+      description: Deactivates a customer by ID.
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/customers/management/{customer_id}/documents/{field_name}/url/:
+    get:
+      operationId: customers_document_url
+      description: Generates a temporary URL to preview a customer document.
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: field_name
+        schema:
+          type: string
+        required: true
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          description: No response body
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/customers/management/{customer_id}/partial-update/:
+    patch:
+      operationId: customers_partial_update
+      description: Partially updates a customer (PATCH).
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - customers
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerUpdateRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerUpdateRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/customers/management/{customer_id}/update/:
+    put:
+      operationId: customers_update
+      description: Fully updates a customer (PUT).
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - customers
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerUpdateRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerUpdateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/customers/management/create/:
+    post:
+      operationId: customers_create
+      description: Creates a new customer.
+      tags:
+      - customers
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerCreateRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/dashboard/summary/:
+    get:
+      operationId: dashboard_summary
+      description: Returns operational summary metrics, alerts, and recent activity.
+        The `business_indicators` section is scoped to the requested period.
+      parameters:
+      - in: query
+        name: period
+        schema:
+          type: string
+          enum:
+          - month
+          - quarter
+          - year
+          default: month
+        description: Time period for business indicators.
+      tags:
+      - dashboard
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardSummary'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/health/:
+    get:
+      operationId: health_check
+      description: Endpoint de salud para verificar disponibilidad de la API.
+      tags:
+      - core
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+          description: ''
+  /api/insurers/management/:
+    get:
+      operationId: insurers_list
+      description: List insurers.
+      tags:
+      - insurers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InsurerRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/insurers/management/{insurer_id}/:
+    get:
+      operationId: insurers_detail
+      description: Get insurer by id.
+      parameters:
+      - in: path
+        name: insurer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - insurers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsurerRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/insurers/management/{insurer_id}/activate/:
+    patch:
+      operationId: insurers_activate
+      description: Activates an insurer by ID.
+      parameters:
+      - in: path
+        name: insurer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - insurers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInsurerReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInsurerReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInsurerReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsurerRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/insurers/management/{insurer_id}/deactivate/:
+    patch:
+      operationId: insurers_deactivate
+      description: Deactivates an insurer by ID.
+      parameters:
+      - in: path
+        name: insurer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - insurers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInsurerReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInsurerReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInsurerReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsurerRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/insurers/management/{insurer_id}/partial-update/:
+    patch:
+      operationId: insurers_partial_update
+      description: Partially update an insurer.
+      parameters:
+      - in: path
+        name: insurer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - insurers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInsurerUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInsurerUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInsurerUpdateRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsurerRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/insurers/management/{insurer_id}/update/:
+    put:
+      operationId: insurers_update
+      description: Update an insurer.
+      parameters:
+      - in: path
+        name: insurer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - insurers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsurerUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InsurerUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InsurerUpdateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsurerRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/insurers/management/create/:
+    post:
+      operationId: insurers_create
+      description: Create a new insurer.
+      tags:
+      - insurers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsurerCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InsurerCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InsurerCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsurerRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/policies/management/:
+    get:
+      operationId: policies_list
+      description: List registered policies.
+      tags:
+      - policies
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PolicyRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/policies/management/{policy_id}/:
+    get:
+      operationId: policies_retrieve
+      description: Retrieve a policy by ID.
+      parameters:
+      - in: path
+        name: policy_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - policies
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/policies/management/{policy_id}/activate/:
+    patch:
+      operationId: policies_activate
+      description: Activates a policy by ID.
+      parameters:
+      - in: path
+        name: policy_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - policies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/policies/management/{policy_id}/activate-with-email/:
+    post:
+      operationId: policies_activate_with_email
+      description: Activates a policy and sends a confirmation email to the insured
+        customer with the policy document attached if available.
+      parameters:
+      - in: path
+        name: policy_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - policies
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/policies/management/{policy_id}/deactivate/:
+    patch:
+      operationId: policies_deactivate
+      description: Deactivates a policy by ID.
+      parameters:
+      - in: path
+        name: policy_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - policies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/policies/management/{policy_id}/document/:
+    patch:
+      operationId: policies_document_update
+      description: Uploads or replaces the PDF document for a policy.
+      parameters:
+      - in: path
+        name: policy_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - policies
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyDocumentRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyDocumentRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/policies/management/{policy_id}/document/url/:
+    get:
+      operationId: policies_document_url
+      description: Generates a temporary URL to preview a policy document.
+      parameters:
+      - in: path
+        name: policy_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - policies
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          description: No response body
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/policies/management/{policy_id}/partial-update/:
+    patch:
+      operationId: policies_partial_update
+      description: Partially update a policy (PATCH).
+      parameters:
+      - in: path
+        name: policy_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - policies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyUpdateRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/policies/management/{policy_id}/send-to-insurer/:
+    post:
+      operationId: policies_send_to_insurer
+      description: Sends the policy to the insurer portfolio executive by email and
+        updates its status to sent_to_insurer.
+      parameters:
+      - in: path
+        name: policy_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - policies
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/policies/management/{policy_id}/update/:
+    put:
+      operationId: policies_update
+      description: Fully update a policy (PUT).
+      parameters:
+      - in: path
+        name: policy_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - policies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PolicyUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PolicyUpdateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/policies/management/create/:
+    post:
+      operationId: policies_create
+      description: Create a policy directly (e.g. import from external source).
+      tags:
+      - policies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PolicyCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PolicyCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/quotes/management/:
+    get:
+      operationId: quotes_list
+      description: Returns the list of quotes with status and scoring traceability.
+      tags:
+      - quotes
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/quotes/management/{quote_id}/:
+    get:
+      operationId: quotes_detail
+      description: Returns quote details by ID.
+      parameters:
+      - in: path
+        name: quote_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - quotes
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/quotes/management/{quote_id}/adjust/:
+    patch:
+      operationId: quotes_adjust
+      description: Applies a manual premium adjustment with an auditable justification.
+      parameters:
+      - in: path
+        name: quote_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - quotes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdjustQuoteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdjustQuoteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdjustQuoteRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/quotes/management/{quote_id}/approve/:
+    patch:
+      operationId: quotes_approve
+      description: Approves the quote and sets the final premium.
+      parameters:
+      - in: path
+        name: quote_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - quotes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedApproveQuoteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedApproveQuoteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedApproveQuoteRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/quotes/management/{quote_id}/generate-scoring/:
+    post:
+      operationId: quotes_generate_scoring
+      description: Generates scoring and suggested premium for a draft quote.
+      parameters:
+      - in: path
+        name: quote_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - quotes
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/quotes/management/{quote_id}/reject/:
+    patch:
+      operationId: quotes_reject
+      description: Rejects a quote with an auditable reason.
+      parameters:
+      - in: path
+        name: quote_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - quotes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRejectQuoteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRejectQuoteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRejectQuoteRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/quotes/management/create/:
+    post:
+      operationId: quotes_create
+      description: Creates a quote and gets a suggested premium from the ML service.
+      tags:
+      - quotes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuoteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateQuoteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateQuoteRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/quotes/management/draft/:
+    post:
+      operationId: quotes_create_draft
+      description: Stores a quote in draft status without running scoring.
+      tags:
+      - quotes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuoteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateQuoteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateQuoteRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/users/management/:
+    get:
+      operationId: users_management_list
+      description: Lists users in descending order by id.
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/users/management/{id}/:
+    get:
+      operationId: users_management_detail
+      description: Obtiene el detail de un user por id.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/users/management/{id}/activate/:
+    patch:
+      operationId: users_management_activate
+      description: Activates a user by ID.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/users/management/{id}/deactivate/:
+    patch:
+      operationId: users_management_deactivate
+      description: Deactivates a user by ID.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/users/management/{id}/partial-update/:
+    patch:
+      operationId: users_management_partial_update
+      description: Partially updates a user (PATCH).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserUpdateRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/users/management/{id}/reset-password/:
+    post:
+      operationId: users_management_reset_password
+      description: Resets the user's password and enforces password change at next
+        sign-in.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminResetPasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminResetPasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminResetPasswordRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Password reset successfully.
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/users/management/{id}/update/:
+    put:
+      operationId: users_management_update
+      description: Fully updates a user (PUT).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/users/management/create/:
+    post:
+      operationId: users_management_create
+      description: Creates a user from administrative management.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/vehicles/management/:
+    get:
+      operationId: vehicles_list
+      description: List registered vehicles.
+      tags:
+      - vehicles
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VehicleRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/vehicles/management/{vehicle_id}/:
+    get:
+      operationId: vehicles_detail
+      description: Returns vehicle details by ID.
+      parameters:
+      - in: path
+        name: vehicle_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vehicles
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/vehicles/management/{vehicle_id}/activate/:
+    patch:
+      operationId: vehicles_activate
+      description: Activates a vehicle by ID.
+      parameters:
+      - in: path
+        name: vehicle_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vehicles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicleReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicleReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicleReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/vehicles/management/{vehicle_id}/deactivate/:
+    patch:
+      operationId: vehicles_deactivate
+      description: Deactivates a vehicle by ID.
+      parameters:
+      - in: path
+        name: vehicle_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vehicles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicleReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicleReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicleReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/vehicles/management/{vehicle_id}/partial-update/:
+    patch:
+      operationId: vehicles_partial_update
+      description: Partially update a vehicle (PATCH).
+      parameters:
+      - in: path
+        name: vehicle_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vehicles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicleUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicleUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicleUpdateRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/vehicles/management/{vehicle_id}/update/:
+    put:
+      operationId: vehicles_update
+      description: Fully update a vehicle (PUT).
+      parameters:
+      - in: path
+        name: vehicle_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vehicles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VehicleUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VehicleUpdateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/vehicles/management/create/:
+    post:
+      operationId: vehicles_create
+      description: Create a new vehicle.
+      tags:
+      - vehicles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VehicleCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VehicleCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/workshops/management/:
+    get:
+      operationId: workshops_list
+      description: Lists registered workshops.
+      tags:
+      - workshops
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkshopRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+  /api/workshops/management/{workshop_id}/:
+    get:
+      operationId: workshops_detail
+      description: Returns workshop details by ID.
+      parameters:
+      - in: path
+        name: workshop_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - workshops
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkshopRead'
+          description: ''
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/workshops/management/{workshop_id}/activate/:
+    patch:
+      operationId: workshops_activate
+      description: Activates a workshop by ID.
+      parameters:
+      - in: path
+        name: workshop_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - workshops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkshopReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkshopReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkshopReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkshopRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/workshops/management/{workshop_id}/deactivate/:
+    patch:
+      operationId: workshops_deactivate
+      description: Deactivates a workshop by ID.
+      parameters:
+      - in: path
+        name: workshop_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - workshops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkshopReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkshopReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkshopReadRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkshopRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/workshops/management/{workshop_id}/partial-update/:
+    patch:
+      operationId: workshops_partial_update
+      description: Partially updates a workshop (PATCH).
+      parameters:
+      - in: path
+        name: workshop_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - workshops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkshopUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkshopUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkshopUpdateRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkshopRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/workshops/management/{workshop_id}/update/:
+    put:
+      operationId: workshops_update
+      description: Fully updates a workshop (PUT).
+      parameters:
+      - in: path
+        name: workshop_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - workshops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkshopUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkshopUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkshopUpdateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkshopRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+  /api/workshops/management/create/:
+    post:
+      operationId: workshops_create
+      description: Creates a new workshop.
+      tags:
+      - workshops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkshopCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkshopCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkshopCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - BearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkshopRead'
+          description: ''
+        '400':
+          $ref: '#/components/schemas/ValidationError'
+        '401':
+          $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          $ref: '#/components/schemas/PermissionDenied'
+components:
+  schemas:
+    AdminResetPasswordRequest:
+      type: object
+      properties:
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - new_password
+    AuthenticationError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: authentication_error
+            message:
+              type: string
+              example: Authentication credentials were not valid.
+            request_id:
+              type: string
+              nullable: true
+          required:
+          - code
+          - message
+    BlankEnum:
+      enum:
+      - ''
+    ChangePasswordRequest:
+      type: object
+      properties:
+        current_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        new_password_confirm:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - current_password
+      - new_password
+      - new_password_confirm
+    ChangePasswordResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
+    ClaimCoverageTypeEnum:
+      enum:
+      - own_damage
+      - civil_liability
+      type: string
+      description: |-
+        * `own_damage` - Own damage
+        * `civil_liability` - Civil liability
+    ClaimCreateRequest:
+      type: object
+      properties:
+        insured_customer:
+          type: integer
+        vehicle:
+          type: integer
+        policy_vehicle:
+          type: integer
+          nullable: true
+        workshop:
+          type: integer
+          nullable: true
+        insurer:
+          type: integer
+        claim_date:
+          type: string
+          format: date
+        documentation_date:
+          type: string
+          format: date
+          nullable: true
+        repair_authorization_date:
+          type: string
+          format: date
+          nullable: true
+        estimated_departure_date:
+          type: string
+          format: date
+          nullable: true
+        payment_date:
+          type: string
+          format: date
+          nullable: true
+        damage_type:
+          $ref: '#/components/schemas/DamageTypeEnum'
+        coverage_type:
+          oneOf:
+          - $ref: '#/components/schemas/ClaimCoverageTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        payment_type:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        claim_description:
+          type: string
+          minLength: 1
+          maxLength: 300
+        vehicle_driver:
+          type: string
+          maxLength: 100
+        insurer_executive:
+          type: string
+          maxLength: 100
+        insurer_executive_phone:
+          type: string
+          maxLength: 10
+        claim_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        adjusted_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        delivery_status_confirmation:
+          type: string
+          maxLength: 200
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClaimDocumentCreateRequest'
+      required:
+      - claim_date
+      - claim_description
+      - insured_customer
+      - insurer
+      - vehicle
+    ClaimDocumentCreateRequest:
+      type: object
+      properties:
+        document_type:
+          $ref: '#/components/schemas/ClaimDocumentDocumentTypeEnum'
+        delivered:
+          type: boolean
+        file:
+          type: string
+          format: binary
+          nullable: true
+        observation:
+          type: string
+          maxLength: 200
+        delivery_date:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - document_type
+    ClaimDocumentDocumentTypeEnum:
+      enum:
+      - id_card
+      - license
+      - registration
+      - form
+      - estimate
+      - other
+      type: string
+      description: |-
+        * `id_card` - ID card
+        * `license` - License
+        * `registration` - Registration
+        * `form` - Form
+        * `estimate` - Estimate
+        * `other` - Other
+    ClaimDocumentRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        claim:
+          type: integer
+        document_type:
+          $ref: '#/components/schemas/ClaimDocumentDocumentTypeEnum'
+        delivered:
+          type: boolean
+        file:
+          type: string
+          format: uri
+          nullable: true
+        observation:
+          type: string
+          maxLength: 200
+        delivery_date:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - claim
+      - created_at
+      - document_type
+      - id
+      - updated_at
+    ClaimDocumentReadRequest:
+      type: object
+      properties:
+        claim:
+          type: integer
+        document_type:
+          $ref: '#/components/schemas/ClaimDocumentDocumentTypeEnum'
+        delivered:
+          type: boolean
+        file:
+          type: string
+          format: binary
+          nullable: true
+        observation:
+          type: string
+          maxLength: 200
+        delivery_date:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - claim
+      - document_type
+    ClaimInsurerSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        insurer_code:
+          type: string
+        name:
+          type: string
+        claims_executive_name:
+          type: string
+        claims_executive_phone:
+          type: string
+        claims_executive_email:
+          type: string
+          format: email
+      required:
+      - claims_executive_email
+      - claims_executive_name
+      - claims_executive_phone
+      - id
+      - insurer_code
+      - name
+    ClaimInsurerSummaryRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        insurer_code:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        claims_executive_name:
+          type: string
+          minLength: 1
+        claims_executive_phone:
+          type: string
+          minLength: 1
+        claims_executive_email:
+          type: string
+          format: email
+          minLength: 1
+      required:
+      - claims_executive_email
+      - claims_executive_name
+      - claims_executive_phone
+      - id
+      - insurer_code
+      - name
+    ClaimPolicyVehicleSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        vehicle_number:
+          type: integer
+        insured_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        product:
+          type: string
+        general_coverage:
+          type: string
+        policy_number:
+          type: string
+          readOnly: true
+        annex_number:
+          type: string
+          readOnly: true
+      required:
+      - annex_number
+      - general_coverage
+      - id
+      - insured_value
+      - policy_number
+      - product
+      - vehicle_number
+    ClaimPolicyVehicleSummaryRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        vehicle_number:
+          type: integer
+        insured_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        product:
+          type: string
+          minLength: 1
+        general_coverage:
+          type: string
+          minLength: 1
+      required:
+      - general_coverage
+      - id
+      - insured_value
+      - product
+      - vehicle_number
+    ClaimRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        insured_customer:
+          type: integer
+        vehicle:
+          type: integer
+        policy_vehicle:
+          type: integer
+          nullable: true
+        workshop:
+          type: integer
+          nullable: true
+        insurer:
+          type: integer
+        claim_number:
+          type: string
+          maxLength: 20
+        claim_date:
+          type: string
+          format: date
+        broker_report_date:
+          type: string
+          format: date
+          nullable: true
+        insurer_report_date:
+          type: string
+          format: date
+          nullable: true
+        documentation_date:
+          type: string
+          format: date
+          nullable: true
+        repair_authorization_date:
+          type: string
+          format: date
+          nullable: true
+        estimated_departure_date:
+          type: string
+          format: date
+          nullable: true
+        payment_date:
+          type: string
+          format: date
+          nullable: true
+        damage_type:
+          $ref: '#/components/schemas/DamageTypeEnum'
+        coverage_type:
+          oneOf:
+          - $ref: '#/components/schemas/ClaimCoverageTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        payment_type:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        claim_description:
+          type: string
+          maxLength: 300
+        vehicle_driver:
+          type: string
+          maxLength: 100
+        insurer_executive:
+          type: string
+          maxLength: 100
+        insurer_executive_phone:
+          type: string
+          maxLength: 10
+        claim_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        adjusted_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        delivery_status_confirmation:
+          type: string
+          maxLength: 200
+        status:
+          $ref: '#/components/schemas/ClaimStatusEnum'
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        workshop_detalle:
+          allOf:
+          - $ref: '#/components/schemas/WorkshopRead'
+          readOnly: true
+        insurer_detalle:
+          allOf:
+          - $ref: '#/components/schemas/ClaimInsurerSummary'
+          readOnly: true
+        policy_vehicle_detalle:
+          allOf:
+          - $ref: '#/components/schemas/ClaimPolicyVehicleSummary'
+          readOnly: true
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClaimDocumentRead'
+          readOnly: true
+      required:
+      - claim_date
+      - claim_description
+      - created_at
+      - documents
+      - id
+      - insured_customer
+      - insurer
+      - insurer_detalle
+      - policy_vehicle_detalle
+      - updated_at
+      - vehicle
+      - workshop_detalle
+    ClaimStatusEnum:
+      enum:
+      - reported
+      - in_progress
+      - authorized
+      - under_repair
+      - closed
+      type: string
+      description: |-
+        * `reported` - Reported
+        * `in_progress` - In progress
+        * `authorized` - Authorized
+        * `under_repair` - Under repair
+        * `closed` - Closed
+    ClaimUpdateRequest:
+      type: object
+      properties:
+        insured_customer:
+          type: integer
+        vehicle:
+          type: integer
+        policy_vehicle:
+          type: integer
+          nullable: true
+        workshop:
+          type: integer
+          nullable: true
+        insurer:
+          type: integer
+        claim_date:
+          type: string
+          format: date
+        broker_report_date:
+          type: string
+          format: date
+          nullable: true
+        insurer_report_date:
+          type: string
+          format: date
+          nullable: true
+        documentation_date:
+          type: string
+          format: date
+          nullable: true
+        repair_authorization_date:
+          type: string
+          format: date
+          nullable: true
+        estimated_departure_date:
+          type: string
+          format: date
+          nullable: true
+        payment_date:
+          type: string
+          format: date
+          nullable: true
+        damage_type:
+          $ref: '#/components/schemas/DamageTypeEnum'
+        coverage_type:
+          oneOf:
+          - $ref: '#/components/schemas/ClaimCoverageTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        payment_type:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        claim_description:
+          type: string
+          minLength: 1
+          maxLength: 300
+        vehicle_driver:
+          type: string
+          maxLength: 100
+        insurer_executive:
+          type: string
+          maxLength: 100
+        insurer_executive_phone:
+          type: string
+          maxLength: 10
+        claim_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        adjusted_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        delivery_status_confirmation:
+          type: string
+          maxLength: 200
+        status:
+          $ref: '#/components/schemas/ClaimStatusEnum'
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          writeOnly: true
+      required:
+      - claim_date
+      - claim_description
+      - insured_customer
+      - insurer
+      - vehicle
+    ClauseTypeEnum:
+      enum:
+      - patrimonial_driver
+      - auto_restitution
+      - plate_guarantee
+      - civil_liability_luc
+      - claim_notice
+      - premium_payment
+      - event_clause
+      - other
+      type: string
+      description: |-
+        * `patrimonial_driver` - Patrimonial driver
+        * `auto_restitution` - Auto restitution
+        * `plate_guarantee` - Plate guarantee
+        * `civil_liability_luc` - Civil liability LUC
+        * `claim_notice` - Claim notice
+        * `premium_payment` - Premium payment
+        * `event_clause` - Event clause
+        * `other` - Other
+    CoverageNameEnum:
+      enum:
+      - own_damage
+      - occupant_personal_accident
+      - occupant_medical_expenses
+      - civil_liability
+      - ambulance
+      - towing
+      - funeral_expenses
+      - other
+      type: string
+      description: |-
+        * `own_damage` - Own damage
+        * `occupant_personal_accident` - Occupant personal accident
+        * `occupant_medical_expenses` - Occupant medical expenses
+        * `civil_liability` - Civil liability
+        * `ambulance` - Ambulance
+        * `towing` - Towing
+        * `funeral_expenses` - Funeral expenses
+        * `other` - Other
+    CreateQuoteRequest:
+      type: object
+      properties:
+        insured_client:
+          type: integer
+        insurer:
+          type: integer
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuoteVehicleInputRequest'
+      required:
+      - insured_client
+      - insurer
+    CustomerCreateRequest:
+      type: object
+      properties:
+        last_names:
+          type: string
+          maxLength: 50
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        sex:
+          oneOf:
+          - $ref: '#/components/schemas/SexEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        marital_status:
+          oneOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        occupation:
+          oneOf:
+          - $ref: '#/components/schemas/OccupationEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        birth_country:
+          type: string
+          maxLength: 50
+        birth_province:
+          type: string
+          maxLength: 50
+        birth_city:
+          type: string
+          maxLength: 50
+        insured_id_document:
+          type: string
+          format: binary
+          nullable: true
+        spouse_document_number:
+          type: string
+          maxLength: 13
+        spouse_id_document:
+          type: string
+          format: binary
+          nullable: true
+        manager_document_number:
+          type: string
+          maxLength: 13
+        manager_id_document:
+          type: string
+          format: binary
+          nullable: true
+        incorporation_deed_document:
+          type: string
+          format: binary
+          nullable: true
+        shareholder_payroll_document:
+          type: string
+          format: binary
+          nullable: true
+        compliance_certificate_document:
+          type: string
+          format: binary
+          nullable: true
+        income_tax_return_document:
+          type: string
+          format: binary
+          nullable: true
+        customer_code:
+          type: string
+          maxLength: 8
+        person_type:
+          $ref: '#/components/schemas/PersonTypeEnum'
+        first_names:
+          type: string
+          minLength: 1
+          maxLength: 50
+        document_type:
+          $ref: '#/components/schemas/CustomerDocumentTypeEnum'
+        document_number:
+          type: string
+          minLength: 1
+          maxLength: 20
+        residence_country:
+          type: string
+          maxLength: 50
+        residence_province:
+          type: string
+          maxLength: 50
+        residence_city:
+          type: string
+          maxLength: 50
+        address:
+          type: string
+          maxLength: 100
+        phone_1:
+          type: string
+          minLength: 1
+          maxLength: 10
+        phone_2:
+          type: string
+          maxLength: 10
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        email_2:
+          type: string
+          format: email
+          maxLength: 100
+        basic_service_bill_document:
+          type: string
+          format: binary
+          nullable: true
+      required:
+      - document_number
+      - document_type
+      - email
+      - first_names
+      - phone_1
+    CustomerDocumentTypeEnum:
+      enum:
+      - CC
+      - RUC
+      - PAS
+      type: string
+      description: |-
+        * `CC` - National ID
+        * `RUC` - RUC
+        * `PAS` - Passport
+    CustomerRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        registration_date:
+          type: string
+          format: date
+        customer_code:
+          type: string
+          maxLength: 8
+        person_type:
+          $ref: '#/components/schemas/PersonTypeEnum'
+        first_names:
+          type: string
+          maxLength: 50
+        document_type:
+          $ref: '#/components/schemas/CustomerDocumentTypeEnum'
+        document_number:
+          type: string
+          maxLength: 20
+        residence_country:
+          type: string
+          maxLength: 50
+        residence_province:
+          type: string
+          maxLength: 50
+        residence_city:
+          type: string
+          maxLength: 50
+        address:
+          type: string
+          maxLength: 100
+        phone_1:
+          type: string
+          maxLength: 10
+        phone_2:
+          type: string
+          maxLength: 10
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        email_2:
+          type: string
+          format: email
+          maxLength: 100
+        basic_service_bill_document:
+          type: string
+          format: uri
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - address
+      - basic_service_bill_document
+      - created_at
+      - customer_code
+      - document_number
+      - document_type
+      - email
+      - first_names
+      - id
+      - phone_1
+      - residence_city
+      - residence_country
+      - residence_province
+      - updated_at
+    CustomerUpdateRequest:
+      type: object
+      properties:
+        last_names:
+          type: string
+          maxLength: 50
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        sex:
+          oneOf:
+          - $ref: '#/components/schemas/SexEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        marital_status:
+          oneOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        occupation:
+          oneOf:
+          - $ref: '#/components/schemas/OccupationEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        birth_country:
+          type: string
+          maxLength: 50
+        birth_province:
+          type: string
+          maxLength: 50
+        birth_city:
+          type: string
+          maxLength: 50
+        insured_id_document:
+          type: string
+          format: binary
+          nullable: true
+        spouse_document_number:
+          type: string
+          maxLength: 13
+        spouse_id_document:
+          type: string
+          format: binary
+          nullable: true
+        manager_document_number:
+          type: string
+          maxLength: 13
+        manager_id_document:
+          type: string
+          format: binary
+          nullable: true
+        incorporation_deed_document:
+          type: string
+          format: binary
+          nullable: true
+        shareholder_payroll_document:
+          type: string
+          format: binary
+          nullable: true
+        compliance_certificate_document:
+          type: string
+          format: binary
+          nullable: true
+        income_tax_return_document:
+          type: string
+          format: binary
+          nullable: true
+        person_type:
+          $ref: '#/components/schemas/PersonTypeEnum'
+        first_names:
+          type: string
+          minLength: 1
+          maxLength: 50
+        document_type:
+          $ref: '#/components/schemas/CustomerDocumentTypeEnum'
+        document_number:
+          type: string
+          minLength: 1
+          maxLength: 20
+        residence_country:
+          type: string
+          maxLength: 50
+        residence_province:
+          type: string
+          maxLength: 50
+        residence_city:
+          type: string
+          maxLength: 50
+        address:
+          type: string
+          maxLength: 100
+        phone_1:
+          type: string
+          minLength: 1
+          maxLength: 10
+        phone_2:
+          type: string
+          maxLength: 10
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        email_2:
+          type: string
+          format: email
+          maxLength: 100
+        basic_service_bill_document:
+          type: string
+          format: binary
+          nullable: true
+        is_active:
+          type: boolean
+      required:
+      - document_number
+      - document_type
+      - email
+      - first_names
+      - phone_1
+    DamageTypeEnum:
+      enum:
+      - partial
+      - total
+      - third_party
+      - other
+      type: string
+      description: |-
+        * `partial` - Partial
+        * `total` - Total
+        * `third_party` - Third party
+        * `other` - Other
+    DashboardActivity:
+      type: object
+      properties:
+        type:
+          type: string
+        message:
+          type: string
+        resource:
+          type: string
+        resource_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - created_at
+      - message
+      - resource
+      - resource_id
+      - type
+    DashboardAlert:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        message:
+          type: string
+        resource:
+          type: string
+        resource_id:
+          type: integer
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        severity:
+          type: string
+      required:
+      - due_date
+      - message
+      - resource
+      - resource_id
+      - severity
+      - title
+      - type
+    DashboardBusinessIndicator:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/PeriodEnum'
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        quotes_count:
+          type: integer
+        approved_quotes_count:
+          type: integer
+        quote_conversion_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        policies_count:
+          type: integer
+        claims_count:
+          type: integer
+        total_insured_value_active_policies:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        total_premium_active_policies:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+      required:
+      - approved_quotes_count
+      - claims_count
+      - period
+      - period_end
+      - period_start
+      - policies_count
+      - quote_conversion_rate
+      - quotes_count
+      - total_insured_value_active_policies
+      - total_premium_active_policies
+    DashboardMetric:
+      type: object
+      properties:
+        total_customers:
+          type: integer
+        active_customers:
+          type: integer
+        total_vehicles:
+          type: integer
+        active_vehicles:
+          type: integer
+        quotes_generated:
+          type: integer
+        quotes_pending:
+          type: integer
+        quotes_approved:
+          type: integer
+        active_policies:
+          type: integer
+        draft_policies:
+          type: integer
+        policies_pending_document:
+          type: integer
+        open_claims:
+          type: integer
+      required:
+      - active_customers
+      - active_policies
+      - active_vehicles
+      - draft_policies
+      - open_claims
+      - policies_pending_document
+      - quotes_approved
+      - quotes_generated
+      - quotes_pending
+      - total_customers
+      - total_vehicles
+    DashboardQuickAction:
+      type: object
+      properties:
+        key:
+          type: string
+        label:
+          type: string
+        resource:
+          type: string
+        target:
+          type: string
+      required:
+      - key
+      - label
+      - resource
+      - target
+    DashboardSummary:
+      type: object
+      properties:
+        metrics:
+          $ref: '#/components/schemas/DashboardMetric'
+        business_indicators:
+          $ref: '#/components/schemas/DashboardBusinessIndicator'
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardAlert'
+        recent_activity:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardActivity'
+        quick_actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardQuickAction'
+      required:
+      - alerts
+      - business_indicators
+      - metrics
+      - quick_actions
+      - recent_activity
+    DeductibleTypeEnum:
+      enum:
+      - general
+      - total_loss_crash
+      - total_loss_theft
+      - patrimonial
+      - other
+      type: string
+      description: |-
+        * `general` - General
+        * `total_loss_crash` - Total loss crash
+        * `total_loss_theft` - Total loss theft
+        * `patrimonial` - Patrimonial
+        * `other` - Other
+    GeneralCoverageEnum:
+      enum:
+      - auto
+      - heavy_auto
+      - passenger_van_all_risk
+      - other
+      type: string
+      description: |-
+        * `auto` - Auto
+        * `heavy_auto` - Heavy auto
+        * `passenger_van_all_risk` - Passenger van all risk
+        * `other` - Other
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+      - status
+    InsurerCreateRequest:
+      type: object
+      properties:
+        registration_date:
+          type: string
+          format: date
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        document_type:
+          $ref: '#/components/schemas/InsurerDocumentTypeEnum'
+        document_number:
+          type: string
+          minLength: 1
+          maxLength: 13
+        country:
+          type: string
+          minLength: 1
+          maxLength: 50
+        province:
+          type: string
+          minLength: 1
+          maxLength: 50
+        city:
+          type: string
+          minLength: 1
+          maxLength: 50
+        address:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        account_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        account_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        account_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        claims_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        claims_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        claims_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        portfolio_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        portfolio_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        portfolio_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        is_active:
+          type: boolean
+        workshop_ids:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+      required:
+      - account_executive_email
+      - account_executive_name
+      - account_executive_phone
+      - address
+      - city
+      - claims_executive_email
+      - claims_executive_name
+      - claims_executive_phone
+      - country
+      - document_number
+      - name
+      - phone
+      - portfolio_executive_email
+      - portfolio_executive_name
+      - portfolio_executive_phone
+      - province
+      - registration_date
+    InsurerDocumentTypeEnum:
+      enum:
+      - RUC
+      type: string
+      description: '* `RUC` - RUC'
+    InsurerRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        registration_date:
+          type: string
+          format: date
+        insurer_code:
+          type: string
+          maxLength: 8
+        name:
+          type: string
+          maxLength: 50
+        document_type:
+          $ref: '#/components/schemas/InsurerDocumentTypeEnum'
+        document_number:
+          type: string
+          maxLength: 13
+        country:
+          type: string
+          maxLength: 50
+        province:
+          type: string
+          maxLength: 50
+        city:
+          type: string
+          maxLength: 50
+        address:
+          type: string
+          maxLength: 100
+        phone:
+          type: string
+          maxLength: 10
+        account_executive_name:
+          type: string
+          maxLength: 100
+        account_executive_phone:
+          type: string
+          maxLength: 10
+        account_executive_email:
+          type: string
+          format: email
+          maxLength: 100
+        claims_executive_name:
+          type: string
+          maxLength: 100
+        claims_executive_phone:
+          type: string
+          maxLength: 10
+        claims_executive_email:
+          type: string
+          format: email
+          maxLength: 100
+        portfolio_executive_name:
+          type: string
+          maxLength: 100
+        portfolio_executive_phone:
+          type: string
+          maxLength: 10
+        portfolio_executive_email:
+          type: string
+          format: email
+          maxLength: 100
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        workshop_ids:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        workshops_summary:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkshopSummary'
+          readOnly: true
+      required:
+      - account_executive_email
+      - account_executive_name
+      - account_executive_phone
+      - address
+      - city
+      - claims_executive_email
+      - claims_executive_name
+      - claims_executive_phone
+      - country
+      - created_at
+      - document_number
+      - id
+      - insurer_code
+      - name
+      - phone
+      - portfolio_executive_email
+      - portfolio_executive_name
+      - portfolio_executive_phone
+      - province
+      - registration_date
+      - updated_at
+      - workshop_ids
+      - workshops_summary
+    InsurerSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        insurer_code:
+          type: string
+        name:
+          type: string
+        is_active:
+          type: boolean
+      required:
+      - id
+      - insurer_code
+      - is_active
+      - name
+    InsurerUpdateRequest:
+      type: object
+      properties:
+        registration_date:
+          type: string
+          format: date
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        document_type:
+          $ref: '#/components/schemas/InsurerDocumentTypeEnum'
+        document_number:
+          type: string
+          minLength: 1
+          maxLength: 13
+        country:
+          type: string
+          minLength: 1
+          maxLength: 50
+        province:
+          type: string
+          minLength: 1
+          maxLength: 50
+        city:
+          type: string
+          minLength: 1
+          maxLength: 50
+        address:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        account_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        account_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        account_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        claims_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        claims_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        claims_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        portfolio_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        portfolio_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        portfolio_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        is_active:
+          type: boolean
+        workshop_ids:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+      required:
+      - account_executive_email
+      - account_executive_name
+      - account_executive_phone
+      - address
+      - city
+      - claims_executive_email
+      - claims_executive_name
+      - claims_executive_phone
+      - country
+      - document_number
+      - name
+      - phone
+      - portfolio_executive_email
+      - portfolio_executive_name
+      - portfolio_executive_phone
+      - province
+      - registration_date
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - email
+      - password
+    LoginResponse:
+      type: object
+      properties:
+        refresh:
+          type: string
+        access:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserRead'
+        must_change_password:
+          type: boolean
+      required:
+      - access
+      - must_change_password
+      - refresh
+      - user
+    LogoutRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    LogoutResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
+    MaritalStatusEnum:
+      enum:
+      - married
+      - single
+      - divorced
+      - widowed
+      - common_law
+      type: string
+      description: |-
+        * `married` - Married
+        * `single` - Single
+        * `divorced` - Divorced
+        * `widowed` - Widowed
+        * `common_law` - Common Law
+    NotFound:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: not_found
+            message:
+              type: string
+              example: Resource was not found.
+            request_id:
+              type: string
+              nullable: true
+          required:
+          - code
+          - message
+    OccupationEnum:
+      enum:
+      - private
+      - public
+      type: string
+      description: |-
+        * `private` - Private Employee
+        * `public` - Public Employee
+    PatchedAdjustQuoteRequest:
+      type: object
+      properties:
+        final_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        manual_override_reason:
+          type: string
+          minLength: 1
+          maxLength: 1000
+    PatchedApproveQuoteRequest:
+      type: object
+      properties:
+        final_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        valid_from:
+          type: string
+          format: date
+        valid_until:
+          type: string
+          format: date
+        issue_date:
+          type: string
+          format: date
+        branch:
+          type: string
+        document_type:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDocumentTypeEnum'
+          default: new
+        renewal_number:
+          type: integer
+          minimum: 1
+        affected_document:
+          type: string
+        payment_method:
+          allOf:
+          - $ref: '#/components/schemas/PaymentMethodEnum'
+          default: cash
+    PatchedClaimReadRequest:
+      type: object
+      properties:
+        insured_customer:
+          type: integer
+        vehicle:
+          type: integer
+        policy_vehicle:
+          type: integer
+          nullable: true
+        workshop:
+          type: integer
+          nullable: true
+        insurer:
+          type: integer
+        claim_number:
+          type: string
+          maxLength: 20
+        claim_date:
+          type: string
+          format: date
+        broker_report_date:
+          type: string
+          format: date
+          nullable: true
+        insurer_report_date:
+          type: string
+          format: date
+          nullable: true
+        documentation_date:
+          type: string
+          format: date
+          nullable: true
+        repair_authorization_date:
+          type: string
+          format: date
+          nullable: true
+        estimated_departure_date:
+          type: string
+          format: date
+          nullable: true
+        payment_date:
+          type: string
+          format: date
+          nullable: true
+        damage_type:
+          $ref: '#/components/schemas/DamageTypeEnum'
+        coverage_type:
+          oneOf:
+          - $ref: '#/components/schemas/ClaimCoverageTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        payment_type:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        claim_description:
+          type: string
+          minLength: 1
+          maxLength: 300
+        vehicle_driver:
+          type: string
+          maxLength: 100
+        insurer_executive:
+          type: string
+          maxLength: 100
+        insurer_executive_phone:
+          type: string
+          maxLength: 10
+        claim_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        adjusted_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        delivery_status_confirmation:
+          type: string
+          maxLength: 200
+        status:
+          $ref: '#/components/schemas/ClaimStatusEnum'
+        is_active:
+          type: boolean
+    PatchedClaimUpdateRequest:
+      type: object
+      properties:
+        insured_customer:
+          type: integer
+        vehicle:
+          type: integer
+        policy_vehicle:
+          type: integer
+          nullable: true
+        workshop:
+          type: integer
+          nullable: true
+        insurer:
+          type: integer
+        claim_date:
+          type: string
+          format: date
+        broker_report_date:
+          type: string
+          format: date
+          nullable: true
+        insurer_report_date:
+          type: string
+          format: date
+          nullable: true
+        documentation_date:
+          type: string
+          format: date
+          nullable: true
+        repair_authorization_date:
+          type: string
+          format: date
+          nullable: true
+        estimated_departure_date:
+          type: string
+          format: date
+          nullable: true
+        payment_date:
+          type: string
+          format: date
+          nullable: true
+        damage_type:
+          $ref: '#/components/schemas/DamageTypeEnum'
+        coverage_type:
+          oneOf:
+          - $ref: '#/components/schemas/ClaimCoverageTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        payment_type:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        claim_description:
+          type: string
+          minLength: 1
+          maxLength: 300
+        vehicle_driver:
+          type: string
+          maxLength: 100
+        insurer_executive:
+          type: string
+          maxLength: 100
+        insurer_executive_phone:
+          type: string
+          maxLength: 10
+        claim_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        adjusted_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        delivery_status_confirmation:
+          type: string
+          maxLength: 200
+        status:
+          $ref: '#/components/schemas/ClaimStatusEnum'
+        is_active:
+          type: boolean
+        documents:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          writeOnly: true
+    PatchedCustomerReadRequest:
+      type: object
+      properties:
+        registration_date:
+          type: string
+          format: date
+        customer_code:
+          type: string
+          minLength: 1
+          maxLength: 8
+        person_type:
+          $ref: '#/components/schemas/PersonTypeEnum'
+        first_names:
+          type: string
+          minLength: 1
+          maxLength: 50
+        document_type:
+          $ref: '#/components/schemas/CustomerDocumentTypeEnum'
+        document_number:
+          type: string
+          minLength: 1
+          maxLength: 20
+        residence_country:
+          type: string
+          minLength: 1
+          maxLength: 50
+        residence_province:
+          type: string
+          minLength: 1
+          maxLength: 50
+        residence_city:
+          type: string
+          minLength: 1
+          maxLength: 50
+        address:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone_1:
+          type: string
+          minLength: 1
+          maxLength: 10
+        phone_2:
+          type: string
+          maxLength: 10
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        email_2:
+          type: string
+          format: email
+          maxLength: 100
+        basic_service_bill_document:
+          type: string
+          format: binary
+        is_active:
+          type: boolean
+    PatchedCustomerUpdateRequest:
+      type: object
+      properties:
+        last_names:
+          type: string
+          maxLength: 50
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        sex:
+          oneOf:
+          - $ref: '#/components/schemas/SexEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        marital_status:
+          oneOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        occupation:
+          oneOf:
+          - $ref: '#/components/schemas/OccupationEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        birth_country:
+          type: string
+          maxLength: 50
+        birth_province:
+          type: string
+          maxLength: 50
+        birth_city:
+          type: string
+          maxLength: 50
+        insured_id_document:
+          type: string
+          format: binary
+          nullable: true
+        spouse_document_number:
+          type: string
+          maxLength: 13
+        spouse_id_document:
+          type: string
+          format: binary
+          nullable: true
+        manager_document_number:
+          type: string
+          maxLength: 13
+        manager_id_document:
+          type: string
+          format: binary
+          nullable: true
+        incorporation_deed_document:
+          type: string
+          format: binary
+          nullable: true
+        shareholder_payroll_document:
+          type: string
+          format: binary
+          nullable: true
+        compliance_certificate_document:
+          type: string
+          format: binary
+          nullable: true
+        income_tax_return_document:
+          type: string
+          format: binary
+          nullable: true
+        person_type:
+          $ref: '#/components/schemas/PersonTypeEnum'
+        first_names:
+          type: string
+          minLength: 1
+          maxLength: 50
+        document_type:
+          $ref: '#/components/schemas/CustomerDocumentTypeEnum'
+        document_number:
+          type: string
+          minLength: 1
+          maxLength: 20
+        residence_country:
+          type: string
+          maxLength: 50
+        residence_province:
+          type: string
+          maxLength: 50
+        residence_city:
+          type: string
+          maxLength: 50
+        address:
+          type: string
+          maxLength: 100
+        phone_1:
+          type: string
+          minLength: 1
+          maxLength: 10
+        phone_2:
+          type: string
+          maxLength: 10
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        email_2:
+          type: string
+          format: email
+          maxLength: 100
+        basic_service_bill_document:
+          type: string
+          format: binary
+          nullable: true
+        is_active:
+          type: boolean
+    PatchedInsurerReadRequest:
+      type: object
+      properties:
+        registration_date:
+          type: string
+          format: date
+        insurer_code:
+          type: string
+          minLength: 1
+          maxLength: 8
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        document_type:
+          $ref: '#/components/schemas/InsurerDocumentTypeEnum'
+        document_number:
+          type: string
+          minLength: 1
+          maxLength: 13
+        country:
+          type: string
+          minLength: 1
+          maxLength: 50
+        province:
+          type: string
+          minLength: 1
+          maxLength: 50
+        city:
+          type: string
+          minLength: 1
+          maxLength: 50
+        address:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        account_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        account_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        account_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        claims_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        claims_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        claims_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        portfolio_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        portfolio_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        portfolio_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        is_active:
+          type: boolean
+    PatchedInsurerUpdateRequest:
+      type: object
+      properties:
+        registration_date:
+          type: string
+          format: date
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        document_type:
+          $ref: '#/components/schemas/InsurerDocumentTypeEnum'
+        document_number:
+          type: string
+          minLength: 1
+          maxLength: 13
+        country:
+          type: string
+          minLength: 1
+          maxLength: 50
+        province:
+          type: string
+          minLength: 1
+          maxLength: 50
+        city:
+          type: string
+          minLength: 1
+          maxLength: 50
+        address:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        account_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        account_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        account_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        claims_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        claims_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        claims_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        portfolio_executive_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        portfolio_executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        portfolio_executive_email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        is_active:
+          type: boolean
+        workshop_ids:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+    PatchedPolicyDocumentRequest:
+      type: object
+      properties:
+        policy_document:
+          type: string
+          format: binary
+    PatchedPolicyReadRequest:
+      type: object
+      properties:
+        insurer:
+          type: integer
+        insured_customer:
+          type: integer
+        policy_number:
+          type: string
+          maxLength: 30
+        policy_type:
+          $ref: '#/components/schemas/PolicyTypeEnum'
+        document_type:
+          $ref: '#/components/schemas/PolicyDocumentTypeEnum'
+        annex_number:
+          type: string
+          maxLength: 30
+        renewal_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        affected_document:
+          type: string
+          maxLength: 30
+        cover_number:
+          type: string
+          maxLength: 30
+        agent:
+          type: string
+          maxLength: 100
+        branch:
+          type: string
+          minLength: 1
+          maxLength: 50
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 3
+        valid_from:
+          type: string
+          format: date
+        valid_until:
+          type: string
+          format: date
+        net_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        financing_charges:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethodEnum'
+        issue_date:
+          type: string
+          format: date
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyVehicleRequest'
+        installments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyInstallmentRequest'
+        clauses:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyClauseRequest'
+    PatchedPolicyUpdateRequest:
+      type: object
+      properties:
+        insurer:
+          type: integer
+        insured_customer:
+          type: integer
+        policy_number:
+          type: string
+          maxLength: 30
+        policy_type:
+          $ref: '#/components/schemas/PolicyTypeEnum'
+        document_type:
+          $ref: '#/components/schemas/PolicyDocumentTypeEnum'
+        annex_number:
+          type: string
+          maxLength: 30
+        renewal_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        affected_document:
+          type: string
+          maxLength: 30
+        cover_number:
+          type: string
+          maxLength: 30
+        agent:
+          type: string
+          maxLength: 100
+        branch:
+          type: string
+          minLength: 1
+          maxLength: 50
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 3
+        valid_from:
+          type: string
+          format: date
+        valid_until:
+          type: string
+          format: date
+        net_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        financing_charges:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethodEnum'
+        issue_date:
+          type: string
+          format: date
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyVehicleRequest'
+        installments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyInstallmentRequest'
+        clauses:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyClauseRequest'
+    PatchedRejectQuoteRequest:
+      type: object
+      properties:
+        rejection_reason:
+          type: string
+          minLength: 1
+          maxLength: 1000
+    PatchedUserReadRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        must_change_password:
+          type: boolean
+    PatchedUserUpdateRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+    PatchedVehicleReadRequest:
+      type: object
+      properties:
+        owner_customer:
+          type: integer
+        brand:
+          type: string
+          minLength: 1
+          maxLength: 20
+        model:
+          type: string
+          minLength: 1
+          maxLength: 20
+        vehicle_type:
+          $ref: '#/components/schemas/VehicleTypeEnum'
+        vehicle_use:
+          $ref: '#/components/schemas/VehicleUseEnum'
+        engine:
+          type: string
+          minLength: 1
+          maxLength: 20
+        chassis:
+          type: string
+          minLength: 1
+          maxLength: 20
+        license_plate:
+          type: string
+          minLength: 1
+          maxLength: 10
+        year:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        commercial_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        color:
+          type: string
+          minLength: 1
+          maxLength: 20
+        province:
+          type: string
+          minLength: 1
+          maxLength: 20
+        city:
+          type: string
+          minLength: 1
+          maxLength: 20
+        is_active:
+          type: boolean
+    PatchedVehicleUpdateRequest:
+      type: object
+      properties:
+        owner_customer:
+          type: integer
+        brand:
+          type: string
+          minLength: 1
+          maxLength: 20
+        model:
+          type: string
+          minLength: 1
+          maxLength: 20
+        vehicle_type:
+          $ref: '#/components/schemas/VehicleTypeEnum'
+        vehicle_use:
+          $ref: '#/components/schemas/VehicleUseEnum'
+        engine:
+          type: string
+          minLength: 1
+          maxLength: 20
+        chassis:
+          type: string
+          minLength: 1
+          maxLength: 20
+        license_plate:
+          type: string
+          minLength: 1
+          maxLength: 10
+        year:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        commercial_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        color:
+          type: string
+          minLength: 1
+          maxLength: 20
+        province:
+          type: string
+          minLength: 1
+          maxLength: 20
+        city:
+          type: string
+          minLength: 1
+          maxLength: 20
+        is_active:
+          type: boolean
+    PatchedWorkshopReadRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        ruc:
+          type: string
+          minLength: 1
+          maxLength: 13
+        address:
+          type: string
+          minLength: 1
+          maxLength: 150
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        contact_executive:
+          type: string
+          minLength: 1
+          maxLength: 100
+        executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        is_active:
+          type: boolean
+    PatchedWorkshopUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        ruc:
+          type: string
+          minLength: 1
+          maxLength: 13
+        address:
+          type: string
+          minLength: 1
+          maxLength: 150
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        contact_executive:
+          type: string
+          minLength: 1
+          maxLength: 100
+        executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        is_active:
+          type: boolean
+        insurer_ids:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+    PaymentMethodEnum:
+      enum:
+      - cash
+      - installments
+      type: string
+      description: |-
+        * `cash` - Cash
+        * `installments` - Installments
+    PaymentTypeEnum:
+      enum:
+      - workshop_assignment
+      - reimbursement
+      type: string
+      description: |-
+        * `workshop_assignment` - Workshop assignment
+        * `reimbursement` - Reimbursement
+    PeriodEnum:
+      enum:
+      - month
+      - quarter
+      - year
+      type: string
+      description: |-
+        * `month` - month
+        * `quarter` - quarter
+        * `year` - year
+    PermissionDenied:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: permission_denied
+            message:
+              type: string
+              example: You do not have permission to perform this action.
+            request_id:
+              type: string
+              nullable: true
+          required:
+          - code
+          - message
+    PersonTypeEnum:
+      enum:
+      - individual
+      - legal_entity
+      type: string
+      description: |-
+        * `individual` - Individual
+        * `legal_entity` - Legal Entity
+    PolicyClause:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        clause_type:
+          $ref: '#/components/schemas/ClauseTypeEnum'
+        description:
+          type: string
+      required:
+      - clause_type
+      - id
+    PolicyClauseRequest:
+      type: object
+      properties:
+        clause_type:
+          $ref: '#/components/schemas/ClauseTypeEnum'
+        description:
+          type: string
+      required:
+      - clause_type
+    PolicyCoverage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        coverage_type:
+          $ref: '#/components/schemas/PolicyCoverageTypeEnum'
+        coverage_name:
+          $ref: '#/components/schemas/CoverageNameEnum'
+        insured_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+      required:
+      - coverage_name
+      - coverage_type
+      - id
+      - insured_amount
+    PolicyCoverageRequest:
+      type: object
+      properties:
+        coverage_type:
+          $ref: '#/components/schemas/PolicyCoverageTypeEnum'
+        coverage_name:
+          $ref: '#/components/schemas/CoverageNameEnum'
+        insured_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+      required:
+      - coverage_name
+      - coverage_type
+      - insured_amount
+    PolicyCoverageTypeEnum:
+      enum:
+      - basic
+      - additional
+      type: string
+      description: |-
+        * `basic` - Basic
+        * `additional` - Additional
+    PolicyCreateRequest:
+      type: object
+      properties:
+        insurer:
+          type: integer
+        insured_customer:
+          type: integer
+        policy_number:
+          type: string
+          maxLength: 30
+        policy_type:
+          $ref: '#/components/schemas/PolicyTypeEnum'
+        document_type:
+          $ref: '#/components/schemas/PolicyDocumentTypeEnum'
+        annex_number:
+          type: string
+          maxLength: 30
+        renewal_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        affected_document:
+          type: string
+          maxLength: 30
+        cover_number:
+          type: string
+          maxLength: 30
+        agent:
+          type: string
+          maxLength: 100
+        branch:
+          type: string
+          minLength: 1
+          maxLength: 50
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 3
+        valid_from:
+          type: string
+          format: date
+        valid_until:
+          type: string
+          format: date
+        net_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        financing_charges:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethodEnum'
+        issue_date:
+          type: string
+          format: date
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyVehicleRequest'
+        installments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyInstallmentRequest'
+        clauses:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyClauseRequest'
+      required:
+      - branch
+      - document_type
+      - insured_customer
+      - insurer
+      - issue_date
+      - payment_method
+      - policy_number
+      - policy_type
+      - valid_from
+      - valid_until
+      - vehicles
+    PolicyDeductible:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        deductible_type:
+          $ref: '#/components/schemas/DeductibleTypeEnum'
+        percentage_on_claim:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        percentage_on_insured:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        minimum_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+      required:
+      - deductible_type
+      - id
+    PolicyDeductibleRequest:
+      type: object
+      properties:
+        deductible_type:
+          $ref: '#/components/schemas/DeductibleTypeEnum'
+        percentage_on_claim:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        percentage_on_insured:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        minimum_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+      required:
+      - deductible_type
+    PolicyDocumentTypeEnum:
+      enum:
+      - new
+      - renewal
+      - endorsement_addition
+      - endorsement_inclusion
+      type: string
+      description: |-
+        * `new` - New
+        * `renewal` - Renewal
+        * `endorsement_addition` - Endorsement addition
+        * `endorsement_inclusion` - Endorsement inclusion
+    PolicyInstallment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        installment_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        due_date:
+          type: string
+          format: date
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        paid:
+          type: boolean
+        paid_date:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - amount
+      - due_date
+      - id
+      - installment_number
+    PolicyInstallmentRequest:
+      type: object
+      properties:
+        installment_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        due_date:
+          type: string
+          format: date
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        paid:
+          type: boolean
+        paid_date:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - amount
+      - due_date
+      - installment_number
+    PolicyRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        quote:
+          type: integer
+          readOnly: true
+          nullable: true
+        insurer:
+          type: integer
+        insured_customer:
+          type: integer
+        policy_number:
+          type: string
+          maxLength: 30
+        policy_type:
+          $ref: '#/components/schemas/PolicyTypeEnum'
+        document_type:
+          $ref: '#/components/schemas/PolicyDocumentTypeEnum'
+        annex_number:
+          type: string
+          maxLength: 30
+        renewal_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        affected_document:
+          type: string
+          maxLength: 30
+        cover_number:
+          type: string
+          maxLength: 30
+        agent:
+          type: string
+          maxLength: 100
+        branch:
+          type: string
+          maxLength: 50
+        currency:
+          type: string
+          maxLength: 3
+        valid_from:
+          type: string
+          format: date
+        valid_until:
+          type: string
+          format: date
+        duration_days:
+          type: integer
+          readOnly: true
+        total_insured_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+          readOnly: true
+        net_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        sib_contribution:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        camp_contribution:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        emission_rights:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        taxable_base:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        iva_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          readOnly: true
+        iva_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        total_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        financing_charges:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethodEnum'
+        status:
+          allOf:
+          - $ref: '#/components/schemas/PolicyStatusEnum'
+          readOnly: true
+        policy_document:
+          type: string
+          format: uri
+          readOnly: true
+        issue_date:
+          type: string
+          format: date
+        is_active:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyVehicle'
+        installments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyInstallment'
+        clauses:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyClause'
+      required:
+      - branch
+      - camp_contribution
+      - created_at
+      - document_type
+      - duration_days
+      - emission_rights
+      - id
+      - insured_customer
+      - insurer
+      - is_active
+      - issue_date
+      - iva_amount
+      - iva_percentage
+      - payment_method
+      - policy_document
+      - policy_number
+      - policy_type
+      - quote
+      - sib_contribution
+      - status
+      - taxable_base
+      - total_amount
+      - total_insured_value
+      - updated_at
+      - valid_from
+      - valid_until
+    PolicyStatusEnum:
+      enum:
+      - draft
+      - sent_to_insurer
+      - pending_document
+      - active
+      - expired
+      - cancelled
+      type: string
+      description: |-
+        * `draft` - Draft
+        * `sent_to_insurer` - Sent to insurer
+        * `pending_document` - Pending document
+        * `active` - Active
+        * `expired` - Expired
+        * `cancelled` - Cancelled
+    PolicyTypeEnum:
+      enum:
+      - individual
+      - fleet
+      type: string
+      description: |-
+        * `individual` - Individual
+        * `fleet` - Fleet
+    PolicyUpdateRequest:
+      type: object
+      properties:
+        insurer:
+          type: integer
+        insured_customer:
+          type: integer
+        policy_number:
+          type: string
+          maxLength: 30
+        policy_type:
+          $ref: '#/components/schemas/PolicyTypeEnum'
+        document_type:
+          $ref: '#/components/schemas/PolicyDocumentTypeEnum'
+        annex_number:
+          type: string
+          maxLength: 30
+        renewal_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        affected_document:
+          type: string
+          maxLength: 30
+        cover_number:
+          type: string
+          maxLength: 30
+        agent:
+          type: string
+          maxLength: 100
+        branch:
+          type: string
+          minLength: 1
+          maxLength: 50
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 3
+        valid_from:
+          type: string
+          format: date
+        valid_until:
+          type: string
+          format: date
+        net_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        financing_charges:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethodEnum'
+        issue_date:
+          type: string
+          format: date
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyVehicleRequest'
+        installments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyInstallmentRequest'
+        clauses:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyClauseRequest'
+      required:
+      - branch
+      - document_type
+      - insured_customer
+      - insurer
+      - issue_date
+      - payment_method
+      - policy_number
+      - policy_type
+      - valid_from
+      - valid_until
+    PolicyVehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        vehicle:
+          type: integer
+        vehicle_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        insured_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        net_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        product:
+          type: string
+          maxLength: 100
+        general_coverage:
+          $ref: '#/components/schemas/GeneralCoverageEnum'
+        occupants:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        service_vehicle:
+          type: boolean
+        tracking_device:
+          type: boolean
+        installation:
+          type: boolean
+        destination_zone:
+          type: string
+          maxLength: 50
+        activity:
+          type: string
+          maxLength: 50
+        coverages:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyCoverage'
+        deductibles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyDeductible'
+      required:
+      - id
+      - insured_value
+      - vehicle
+      - vehicle_number
+    PolicyVehicleRequest:
+      type: object
+      properties:
+        vehicle:
+          type: integer
+        vehicle_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        insured_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        net_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        product:
+          type: string
+          maxLength: 100
+        general_coverage:
+          $ref: '#/components/schemas/GeneralCoverageEnum'
+        occupants:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        service_vehicle:
+          type: boolean
+        tracking_device:
+          type: boolean
+        installation:
+          type: boolean
+        destination_zone:
+          type: string
+          maxLength: 50
+        activity:
+          type: string
+          maxLength: 50
+        coverages:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyCoverageRequest'
+        deductibles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyDeductibleRequest'
+      required:
+      - insured_value
+      - vehicle
+      - vehicle_number
+    QuoteRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        insured_client:
+          type: integer
+        insurer:
+          type: integer
+        total_vehicle_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        accidents_last_5y:
+          type: integer
+          maximum: 20
+          minimum: 0
+        customer_accidents_5y:
+          type: integer
+          maximum: 200
+          minimum: 0
+        vehicle_accidents_5y:
+          type: integer
+          maximum: 200
+          minimum: 0
+        context_accidents_5y:
+          type: integer
+          maximum: 10000
+          minimum: 0
+        vehicle_loss_amount_5y:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        context_loss_amount_5y:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        client_residence_province:
+          type: string
+          maxLength: 50
+        client_residence_city:
+          type: string
+          maxLength: 50
+        status:
+          $ref: '#/components/schemas/QuoteStatusEnum'
+        risk_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+          nullable: true
+        risk_band:
+          oneOf:
+          - $ref: '#/components/schemas/QuoteRiskBandEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        suggested_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,6})?$
+          nullable: true
+        suggested_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        final_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        currency:
+          type: string
+          maxLength: 3
+        ml_request_id:
+          type: string
+          format: uuid
+        inference_id:
+          type: string
+          format: uuid
+          nullable: true
+        inference_at:
+          type: string
+          format: date-time
+          nullable: true
+        model_name:
+          type: string
+          maxLength: 100
+        model_version:
+          type: string
+          maxLength: 50
+        model_trained_at:
+          type: string
+          format: date-time
+          nullable: true
+        ml_request_payload: {}
+        ml_response_payload: {}
+        explainability_method:
+          type: string
+          nullable: true
+          readOnly: true
+        explainability_feature_contributions:
+          readOnly: true
+        explainability_top_factors:
+          readOnly: true
+        manual_override_reason:
+          type: string
+        rejection_reason:
+          type: string
+        approved_by:
+          type: integer
+          nullable: true
+        rejected_by:
+          type: integer
+          nullable: true
+        approved_at:
+          type: string
+          format: date-time
+          nullable: true
+        rejected_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        customer_code:
+          type: string
+          readOnly: true
+        insurer_name:
+          type: string
+          readOnly: true
+        policy_id:
+          type: integer
+          nullable: true
+          readOnly: true
+        policy_status:
+          type: string
+          nullable: true
+          readOnly: true
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuoteVehicle'
+          readOnly: true
+        approved_by_email:
+          type: string
+          format: email
+          readOnly: true
+        rejected_by_email:
+          type: string
+          format: email
+          readOnly: true
+      required:
+      - approved_by_email
+      - created_at
+      - customer_code
+      - explainability_feature_contributions
+      - explainability_method
+      - explainability_top_factors
+      - id
+      - insured_client
+      - insurer
+      - insurer_name
+      - ml_request_id
+      - policy_id
+      - policy_status
+      - rejected_by_email
+      - total_vehicle_value
+      - updated_at
+      - vehicles
+    QuoteRiskBandEnum:
+      enum:
+      - LOW
+      - MEDIUM
+      - HIGH
+      type: string
+      description: |-
+        * `LOW` - Low
+        * `MEDIUM` - Medium
+        * `HIGH` - High
+    QuoteStatusEnum:
+      enum:
+      - draft
+      - scoring_generated
+      - manually_adjusted
+      - approved
+      - rejected
+      type: string
+      description: |-
+        * `draft` - Draft
+        * `scoring_generated` - Scoring generated
+        * `manually_adjusted` - Manually adjusted
+        * `approved` - Approved
+        * `rejected` - Rejected
+    QuoteVehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        vehicle:
+          type: integer
+        vehicle_number:
+          type: integer
+          readOnly: true
+        vehicle_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        vehicle_value_override_reason:
+          type: string
+        suggested_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,6})?$
+          readOnly: true
+          nullable: true
+        suggested_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+        final_premium:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+        risk_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+          readOnly: true
+          nullable: true
+        risk_band:
+          allOf:
+          - $ref: '#/components/schemas/QuoteRiskBandEnum'
+          readOnly: true
+        ml_request_payload:
+          readOnly: true
+        ml_response_payload:
+          readOnly: true
+        license_plate:
+          type: string
+          readOnly: true
+        brand:
+          type: string
+          readOnly: true
+        model:
+          type: string
+          readOnly: true
+      required:
+      - brand
+      - final_premium
+      - id
+      - license_plate
+      - ml_request_payload
+      - ml_response_payload
+      - model
+      - risk_band
+      - risk_score
+      - suggested_premium
+      - suggested_rate
+      - vehicle
+      - vehicle_number
+      - vehicle_value
+    QuoteVehicleInputRequest:
+      type: object
+      properties:
+        vehicle:
+          type: integer
+        vehicle_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        vehicle_value_override_reason:
+          type: string
+      required:
+      - vehicle
+    RefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    RefreshTokenResponse:
+      type: object
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    RoleEnum:
+      enum:
+      - admin
+      - quote_technician
+      - sales_representative
+      - administrative_staff
+      type: string
+      description: |-
+        * `admin` - Admin
+        * `quote_technician` - Quote Technician
+        * `sales_representative` - Sales Representative
+        * `administrative_staff` - Administrative Staff
+    SexEnum:
+      enum:
+      - male
+      - female
+      - other
+      type: string
+      description: |-
+        * `male` - Male
+        * `female` - Female
+        * `other` - Other
+    UserCreateRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+      required:
+      - email
+      - password
+    UserRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        must_change_password:
+          type: boolean
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - date_joined
+      - email
+      - id
+      - updated_at
+      - username
+    UserUpdateRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+      required:
+      - email
+      - username
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: validation_error
+            message:
+              type: string
+              example: Invalid data.
+            request_id:
+              type: string
+              nullable: true
+            fields:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+            field_errors:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    code:
+                      type: string
+                  required:
+                  - message
+                  - code
+          required:
+          - code
+          - message
+    VehicleCreateRequest:
+      type: object
+      properties:
+        owner_customer:
+          type: integer
+        brand:
+          type: string
+          minLength: 1
+          maxLength: 20
+        model:
+          type: string
+          minLength: 1
+          maxLength: 20
+        vehicle_type:
+          $ref: '#/components/schemas/VehicleTypeEnum'
+        vehicle_use:
+          $ref: '#/components/schemas/VehicleUseEnum'
+        engine:
+          type: string
+          minLength: 1
+          maxLength: 20
+        chassis:
+          type: string
+          minLength: 1
+          maxLength: 20
+        license_plate:
+          type: string
+          minLength: 1
+          maxLength: 10
+        year:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        commercial_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        color:
+          type: string
+          minLength: 1
+          maxLength: 20
+        province:
+          type: string
+          minLength: 1
+          maxLength: 20
+        city:
+          type: string
+          minLength: 1
+          maxLength: 20
+        is_active:
+          type: boolean
+      required:
+      - brand
+      - chassis
+      - city
+      - color
+      - engine
+      - license_plate
+      - model
+      - owner_customer
+      - province
+      - vehicle_type
+      - vehicle_use
+      - year
+    VehicleRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        owner_customer:
+          type: integer
+        brand:
+          type: string
+          maxLength: 20
+        model:
+          type: string
+          maxLength: 20
+        vehicle_type:
+          $ref: '#/components/schemas/VehicleTypeEnum'
+        vehicle_use:
+          $ref: '#/components/schemas/VehicleUseEnum'
+        engine:
+          type: string
+          maxLength: 20
+        chassis:
+          type: string
+          maxLength: 20
+        license_plate:
+          type: string
+          maxLength: 10
+        year:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        commercial_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        color:
+          type: string
+          maxLength: 20
+        province:
+          type: string
+          maxLength: 20
+        city:
+          type: string
+          maxLength: 20
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - brand
+      - chassis
+      - city
+      - color
+      - created_at
+      - engine
+      - id
+      - license_plate
+      - model
+      - owner_customer
+      - province
+      - updated_at
+      - vehicle_type
+      - vehicle_use
+      - year
+    VehicleTypeEnum:
+      enum:
+      - jeep
+      - sedan
+      - pickup
+      - truck
+      - motorcycle
+      - other
+      type: string
+      description: |-
+        * `jeep` - Jeep
+        * `sedan` - Sedan
+        * `pickup` - Pickup
+        * `truck` - Truck
+        * `motorcycle` - Motorcycle
+        * `other` - Other
+    VehicleUpdateRequest:
+      type: object
+      properties:
+        owner_customer:
+          type: integer
+        brand:
+          type: string
+          minLength: 1
+          maxLength: 20
+        model:
+          type: string
+          minLength: 1
+          maxLength: 20
+        vehicle_type:
+          $ref: '#/components/schemas/VehicleTypeEnum'
+        vehicle_use:
+          $ref: '#/components/schemas/VehicleUseEnum'
+        engine:
+          type: string
+          minLength: 1
+          maxLength: 20
+        chassis:
+          type: string
+          minLength: 1
+          maxLength: 20
+        license_plate:
+          type: string
+          minLength: 1
+          maxLength: 10
+        year:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        commercial_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        color:
+          type: string
+          minLength: 1
+          maxLength: 20
+        province:
+          type: string
+          minLength: 1
+          maxLength: 20
+        city:
+          type: string
+          minLength: 1
+          maxLength: 20
+        is_active:
+          type: boolean
+      required:
+      - brand
+      - chassis
+      - city
+      - color
+      - engine
+      - license_plate
+      - model
+      - owner_customer
+      - province
+      - vehicle_type
+      - vehicle_use
+      - year
+    VehicleUseEnum:
+      enum:
+      - tourism
+      - personal
+      - commercial
+      - work
+      - other
+      type: string
+      description: |-
+        * `tourism` - Tourism
+        * `personal` - Personal
+        * `commercial` - Commercial
+        * `work` - Work
+        * `other` - Other
+    WorkshopCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        ruc:
+          type: string
+          minLength: 1
+          maxLength: 13
+        address:
+          type: string
+          minLength: 1
+          maxLength: 150
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        contact_executive:
+          type: string
+          minLength: 1
+          maxLength: 100
+        executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        is_active:
+          type: boolean
+        insurer_ids:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+      required:
+      - address
+      - contact_executive
+      - executive_phone
+      - name
+      - phone
+      - ruc
+    WorkshopRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        insurer_ids:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        insurers_summary:
+          type: array
+          items:
+            $ref: '#/components/schemas/InsurerSummary'
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        ruc:
+          type: string
+          maxLength: 13
+        address:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 10
+        contact_executive:
+          type: string
+          maxLength: 100
+        executive_phone:
+          type: string
+          maxLength: 10
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - address
+      - contact_executive
+      - created_at
+      - executive_phone
+      - id
+      - insurer_ids
+      - insurers_summary
+      - name
+      - phone
+      - ruc
+      - updated_at
+    WorkshopReadRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        ruc:
+          type: string
+          minLength: 1
+          maxLength: 13
+        address:
+          type: string
+          minLength: 1
+          maxLength: 150
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        contact_executive:
+          type: string
+          minLength: 1
+          maxLength: 100
+        executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        is_active:
+          type: boolean
+      required:
+      - address
+      - contact_executive
+      - executive_phone
+      - name
+      - phone
+      - ruc
+    WorkshopSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        ruc:
+          type: string
+        is_active:
+          type: boolean
+      required:
+      - id
+      - is_active
+      - name
+      - ruc
+    WorkshopUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        ruc:
+          type: string
+          minLength: 1
+          maxLength: 13
+        address:
+          type: string
+          minLength: 1
+          maxLength: 150
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        contact_executive:
+          type: string
+          minLength: 1
+          maxLength: 100
+        executive_phone:
+          type: string
+          minLength: 1
+          maxLength: 10
+        is_active:
+          type: boolean
+        insurer_ids:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+      required:
+      - address
+      - contact_executive
+      - executive_phone
+      - name
+      - phone
+      - ruc
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

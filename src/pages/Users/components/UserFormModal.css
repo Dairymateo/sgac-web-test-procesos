@@ -1,0 +1,206 @@
+/* Estilos para UserFormModal.css */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.15s ease;
+    padding: 12px;
+    overflow-y: auto;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-box {
+    background: var(--color-surface);
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 440px;
+    padding: 28px 32px 24px;
+    animation: slideUp 0.18s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(16px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.modal-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.modal-close {
+    background: transparent;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.15s;
+}
+
+.modal-close:hover {
+    background: var(--color-bg);
+    color: var(--color-text);
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.modal-field label {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.modal-field input,
+.modal-field select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: var(--font);
+    color: var(--color-text);
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-field input:focus,
+.modal-field select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.12);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.btn-primary {
+    padding: 9px 22px;
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.15s;
+}
+
+.btn-primary:hover {
+    background: var(--color-primary-hover);
+}
+
+.btn-secondary {
+    padding: 9px 22px;
+    background: transparent;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.btn-secondary:hover {
+    background: var(--color-bg);
+    color: var(--color-text);
+}
+
+.modal-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.modal-input-wrap input {
+    padding-right: 40px;
+    box-sizing: border-box;
+}
+
+.modal-eye-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    line-height: 1;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+}
+
+.action-error {
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid #fecaca;
+    background: #fef2f2;
+    color: #991b1b;
+    font-size: 13px;
+}
+
+.field-error {
+    margin-top: 4px;
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+@media (max-width: 600px) {
+    .modal-overlay {
+        align-items: flex-start;
+        padding: 0;
+    }
+
+    .modal-box {
+        max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+        max-height: 100dvh !important;
+        overflow-y: auto;
+    }
+}

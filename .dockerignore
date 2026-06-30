@@ -1,0 +1,8 @@
+# Ignorar en el contexto de build de Docker
+node_modules
+dist
+coverage
+.git
+.gitignore
+*.md
+.env*

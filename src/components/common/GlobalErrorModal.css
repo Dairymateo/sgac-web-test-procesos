@@ -1,0 +1,94 @@
+/* Estilos para GlobalErrorModal.css */
+.global-error-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(18, 48, 79, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeInOverlay 0.3s ease;
+}
+
+.global-error-dialog {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: slideUpDialog 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.global-error-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: #a0aec0;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+    display: flex;
+}
+
+.global-error-close:hover {
+    color: #4a5568;
+}
+
+.global-error-icon {
+    font-size: 48px;
+    color: #e53e3e;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.global-error-title {
+    font-size: 1.25rem;
+    color: #2d3748;
+    margin: 0 0 12px;
+    font-weight: 600;
+}
+
+.global-error-desc {
+    font-size: 0.95rem;
+    color: #4a5568;
+    margin: 0 0 24px;
+    line-height: 1.5;
+}
+
+.global-error-btn {
+    background: #1a4185;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+}
+
+.global-error-btn:hover {
+    background: #12304f;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUpDialog {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}

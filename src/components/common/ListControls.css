@@ -1,0 +1,107 @@
+/* Estilos para ListControls.css */
+.list-controls {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.list-controls__form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    align-items: flex-end;
+}
+
+.list-controls__field {
+    display: grid;
+    gap: 4px;
+    flex: 1 1 145px;
+    min-width: 145px;
+}
+
+.list-controls__field--search {
+    flex: 2 1 300px;
+    min-width: 280px;
+}
+
+.list-controls__field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.list-controls__field input,
+.list-controls__field select {
+    width: 100%;
+    height: 38px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 0 10px;
+    background: #fff;
+    color: #0f172a;
+}
+
+.list-controls__actions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+}
+
+@media (min-width: 1280px) {
+    .list-controls__field {
+        flex-grow: 0;
+        width: 150px;
+    }
+
+    .list-controls__field--search {
+        flex-grow: 1;
+        width: auto;
+        max-width: 520px;
+    }
+}
+
+@media (max-width: 768px) {
+    .list-controls__form {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .list-controls__field,
+    .list-controls__field--search,
+    .list-controls__actions {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .list-controls__actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+
+.list-controls__pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    color: #475569;
+    font-size: 14px;
+}
+
+.list-controls__page-btn {
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    color: #0f172a;
+    border-radius: 6px;
+    padding: 7px 10px;
+    cursor: pointer;
+}
+
+.list-controls__page-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.list-controls__pagination--bottom {
+    margin-top: 12px;
+}

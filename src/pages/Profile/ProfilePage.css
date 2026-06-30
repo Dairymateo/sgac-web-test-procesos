@@ -1,0 +1,137 @@
+/* Estilos para ProfilePage.css */
+.profile-page {
+    width: min(1100px, calc(100vw - 48px));
+    margin: 34px auto;
+}
+
+.profile-card {
+    background: #ffffff;
+    border: 1px solid rgba(203, 213, 225, 0.75);
+    border-radius: 18px;
+    box-shadow: 0 16px 38px rgba(18, 48, 79, 0.08);
+    overflow: hidden;
+}
+
+.profile-hero {
+    padding: 28px;
+    background:
+        radial-gradient(circle at 92% 0%, rgba(16, 185, 129, 0.18) 0, transparent 32%),
+        linear-gradient(135deg, #143f7b 0%, #1f766e 100%);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.profile-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    flex-shrink: 0;
+}
+
+.profile-avatar svg {
+    width: 34px;
+    height: 34px;
+}
+
+.profile-hero h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.profile-hero p {
+    margin: 6px 0 0;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.profile-content {
+    padding: 26px;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.profile-field {
+    padding: 16px;
+    border-radius: 14px;
+    background: #f8fbff;
+    border: 1px solid #e5edf7;
+}
+
+.profile-field span {
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.profile-field strong {
+    color: #0b2545;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+.profile-field input {
+    width: 100%;
+    min-height: 40px;
+    border: 1px solid #cbd8ea;
+    border-radius: 11px;
+    background: #ffffff;
+    color: #0b2545;
+    font-size: 14px;
+    font-weight: 650;
+    padding: 0 12px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.profile-field input:focus {
+    border-color: #2c67ad;
+    box-shadow: 0 0 0 3px rgba(44, 103, 173, 0.14);
+}
+
+.profile-message {
+    margin: 0 0 18px;
+}
+
+.profile-actions {
+    margin-top: 22px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+@media (max-width: 720px) {
+    .profile-page {
+        width: calc(100vw - 28px);
+        margin: 22px auto;
+    }
+
+    .profile-hero,
+    .profile-content {
+        padding: 20px;
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-actions {
+        justify-content: stretch;
+    }
+
+    .profile-actions .btn-primary {
+        width: 100%;
+    }
+}

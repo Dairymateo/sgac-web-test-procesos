@@ -1,0 +1,279 @@
+/* Estilos para TallerFormModal.css */
+.taller-modal-box {
+    max-width: 800px;
+    width: 95%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-tabs {
+    display: flex;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 0 24px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    row-gap: 4px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #64748b;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover {
+    color: #1a2a40;
+}
+
+.tab-btn.active {
+    color: #1a2a40;
+    border-bottom-color: #3b82f6;
+}
+
+.modal-body-scroll {
+    overflow-y: auto;
+    padding: 0 30px 4px;
+    flex: 1;
+}
+
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+    padding-bottom: 28px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.modal-body-scroll > .form-section + .form-section {
+    margin-top: 36px;
+}
+
+.form-section h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #1e293b;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 8px;
+}
+
+.grid-2-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 20px;
+    row-gap: 22px;
+    align-items: start;
+}
+
+.grid-3-col {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 18px;
+    row-gap: 22px;
+    align-items: start;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.form-field.span-2 {
+    grid-column: span 2;
+}
+
+.form-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    line-height: 1.25;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.35;
+    min-height: 44px;
+    background-color: #fff;
+    color: #0f172a;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 96px;
+    line-height: 1.45;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-field input:disabled,
+.form-field select:disabled,
+.form-field textarea:disabled {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.field-invalid {
+    border-color: #e53e3e !important;
+}
+
+.modal-actions-fixed {
+    margin-top: 10px;
+    padding: 24px 30px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: #f8fafc;
+    border-radius: 0 0 8px 8px;
+}
+
+.field-error {
+    font-size: 12px;
+    color: #e53e3e;
+    margin-top: 2px;
+    line-height: 1.35;
+}
+
+.help-text {
+    display: block;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: #64748b;
+    margin: 2px 0 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .grid-2-col,
+    .grid-3-col {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field.span-2 {
+        grid-column: span 1;
+    }
+
+    .tab-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .modal-body-scroll {
+        padding: 0 16px 4px;
+    }
+
+    .modal-actions-fixed {
+        padding: 18px 16px;
+    }
+
+    .workshop-selector {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.workshop-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.workshop-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    background-color: #e0e7ff;
+    color: #3730a3;
+}
+
+.workshop-chip--inactive {
+    background-color: #fde8e8;
+    color: #991b1b;
+}
+
+.workshop-chip button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    color: inherit;
+    padding: 0;
+    line-height: 1;
+}
+
+.workshop-selector {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.workshop-selector select {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #0f172a;
+}
+
+.workshop-selector select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-add-workshop {
+    padding: 10px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.btn-add-workshop:hover {
+    background-color: #2563eb;
+}
+
+.btn-add-workshop:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}

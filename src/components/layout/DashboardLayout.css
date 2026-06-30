@@ -1,0 +1,56 @@
+/* Estilos para DashboardLayout.css */
+.dashboard-shell {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    max-width: 100dvw;
+    overflow: hidden;
+}
+
+.dashboard-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0; 
+}
+
+.dashboard-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 28px 32px;
+    background: var(--color-bg);
+    min-width: 0;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-content {
+        padding: 20px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-shell {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: visible;
+    }
+
+    .dashboard-main {
+        overflow: visible;
+        width: 100%;
+        max-width: 100dvw;
+    }
+
+    .dashboard-content {
+        flex: 1;
+        padding: 14px 12px;
+        overflow-y: visible;
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100dvw;
+    }
+}

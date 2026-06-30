@@ -1,0 +1,309 @@
+/* Estilos para PolicyFormModal.css */
+.policy-modal-box {
+    max-width: 1040px;
+    width: 96%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.policy-modal-box .modal-body-scroll {
+    padding-top: 20px;
+}
+
+.field-error-summary {
+    margin: 8px 0 0;
+    padding-left: 18px;
+}
+
+.field-error-summary li {
+    margin-top: 4px;
+}
+
+.policy-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.policy-summary-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.policy-summary-item span {
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 650;
+    margin-bottom: 4px;
+}
+
+.policy-summary-item strong {
+    color: #0f172a;
+    font-size: 16px;
+}
+
+.policy-inline-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.policy-workflow-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 10px 30px;
+    border-bottom: 1px solid var(--color-border);
+    background: #f8fafc;
+}
+
+.policy-workflow-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.policy-workflow-label {
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+.policy-workflow-message {
+    width: 100%;
+    color: #991b1b;
+    font-size: 12.5px;
+    margin-top: 4px;
+}
+
+.policy-response-form {
+    padding: 16px 30px;
+    background: #eff6ff;
+    border-bottom: 1px solid #bfdbfe;
+}
+
+.policy-response-form__title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 12px;
+}
+
+.policy-vehicle-block {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    background: #fafafa;
+}
+
+.policy-vehicle-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.policy-vehicle-header strong {
+    font-size: 13.5px;
+    color: var(--color-text);
+}
+
+.policy-vehicle-subsection {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #e8ecf0;
+}
+
+.policy-vehicle-subsection-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+}
+
+.policy-empty-sub {
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin: 4px 0;
+}
+
+.policy-coverage-header,
+.policy-deductible-header {
+    display: grid;
+    gap: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 6px;
+    padding: 0 2px;
+}
+
+.policy-coverage-header {
+    grid-template-columns: 120px 1fr 130px 28px;
+}
+
+.policy-coverage-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 130px 28px;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.policy-deductible-header {
+    grid-template-columns: 160px 90px 90px 100px 28px;
+}
+
+.policy-deductible-row {
+    display: grid;
+    grid-template-columns: 160px 90px 90px 100px 28px;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.btn-icon-remove {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fee2e2;
+    color: #991b1b;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+    border: 1px solid #fca5a5;
+    transition: background 0.15s;
+}
+
+.btn-icon-remove:hover {
+    background: #fca5a5;
+}
+
+.policy-clause-row {
+    display: grid;
+    grid-template-columns: 200px 1fr auto;
+    gap: 12px;
+    align-items: start;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.policy-clause-row:last-child {
+    border-bottom: none;
+}
+
+.policy-installment-header,
+.policy-installment-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 110px 60px 130px 28px;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.policy-installment-header {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 0 2px;
+}
+
+.policy-installment-check {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn-sm {
+    font-size: 12px;
+    padding: 5px 10px;
+}
+
+.input-fixed-value {
+    background-color: #f1f5f9 !important;
+    color: #64748b !important;
+    cursor: not-allowed !important;
+    border-color: #e2e8f0 !important;
+    font-style: italic;
+}
+
+.input-fixed-value:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.field-badge-fixed {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    color: #475569;
+    background: #e2e8f0;
+    border-radius: 4px;
+    padding: 1px 6px;
+    margin-left: 5px;
+    vertical-align: middle;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+@media (max-width: 600px) {
+    .policy-workflow-bar {
+        padding: 10px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .policy-response-form {
+        padding: 12px 16px;
+    }
+
+    .policy-vehicle-block {
+        padding: 12px;
+    }
+
+    .policy-coverage-header,
+    .policy-coverage-row,
+    .policy-deductible-header,
+    .policy-deductible-row,
+    .policy-installment-header,
+    .policy-installment-row,
+    .policy-clause-row {
+        grid-template-columns: 1fr;
+    }
+
+    .policy-coverage-header,
+    .policy-deductible-header,
+    .policy-installment-header {
+        display: none;
+    }
+
+    .policy-summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .policy-summary-grid {
+        grid-template-columns: 1fr;
+    }
+}

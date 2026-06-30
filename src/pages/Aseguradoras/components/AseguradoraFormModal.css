@@ -1,0 +1,93 @@
+/* Estilos para AseguradoraFormModal.css */
+.aseguradora-modal-box {
+    max-width: 900px;
+    width: 95%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.workshop-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.workshop-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    background-color: #e0e7ff;
+    color: #3730a3;
+}
+
+.workshop-chip--inactive {
+    background-color: #fde8e8;
+    color: #991b1b;
+}
+
+.workshop-chip button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    color: inherit;
+    padding: 0;
+    line-height: 1;
+}
+
+.workshop-selector {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.workshop-selector select {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #0f172a;
+}
+
+.workshop-selector select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-add-workshop {
+    padding: 10px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.btn-add-workshop:hover {
+    background-color: #2563eb;
+}
+
+.btn-add-workshop:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .workshop-selector {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

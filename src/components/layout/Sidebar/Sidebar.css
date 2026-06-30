@@ -1,0 +1,260 @@
+/* Estilos para Sidebar.css */
+.sidebar {
+    width: 232px;
+    min-width: 232px;
+    height: 100vh;
+    background:
+        radial-gradient(180px 180px at 88% 4%, rgba(59, 116, 196, 0.25), transparent 64%),
+        linear-gradient(180deg, #10294f 0%, #203752 54%, #143f3a 100%);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    transition: width 0.22s ease, min-width 0.22s ease;
+}
+
+.sidebar--collapsed {
+    width: 78px;
+    min-width: 78px;
+}
+
+.sidebar-brand {
+    min-height: 148px;
+    padding: 18px 18px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+}
+
+.sidebar-brand-logo {
+    width: 92px;
+    height: 66px;
+    object-fit: contain;
+    align-self: flex-start;
+    transition: width 0.22s ease, height 0.22s ease;
+}
+
+.sidebar-brand-role {
+    display: block;
+    font-size: 11px;
+    color: rgba(226, 232, 240, 0.76);
+    transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.sidebar-toggle {
+    position: absolute;
+    right: 14px;
+    top: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #eaf2ff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s, transform 0.15s;
+}
+
+.sidebar-toggle:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+}
+
+.sidebar-toggle svg {
+    width: 19px;
+    height: 19px;
+}
+
+.sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 10px;
+    gap: 6px;
+}
+
+.sidebar-item {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 0 14px;
+    color: rgba(226, 232, 240, 0.84);
+    font-size: 14px;
+    font-weight: 650;
+    border-radius: 13px;
+    text-decoration: none;
+    transition: background-color 0.16s, color 0.16s, transform 0.16s;
+}
+
+.sidebar-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateX(2px);
+}
+
+.sidebar-item--active {
+    background: linear-gradient(135deg, rgba(59, 116, 196, 0.72), rgba(30, 163, 100, 0.42));
+    color: #ffffff;
+    box-shadow: inset 3px 0 0 rgba(255, 255, 255, 0.78);
+}
+
+.sidebar-item-icon {
+    width: 24px;
+    min-width: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-item-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.15;
+}
+
+.sidebar-item-label {
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 0.16s ease, width 0.2s ease;
+}
+
+.sidebar--collapsed .sidebar-brand {
+    align-items: center;
+    padding: 18px 10px 14px;
+}
+
+.sidebar--collapsed .sidebar-brand-logo {
+    width: 46px;
+    height: 46px;
+    align-self: center;
+}
+
+.sidebar--collapsed .sidebar-brand-role {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.sidebar--collapsed .sidebar-toggle {
+    right: 50%;
+    top: 92px;
+    transform: translateX(50%);
+}
+
+.sidebar--collapsed .sidebar-toggle:hover {
+    transform: translateX(50%) translateY(-1px);
+}
+
+.sidebar--collapsed .sidebar-nav {
+    padding: 14px 10px;
+}
+
+.sidebar--collapsed .sidebar-item {
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+}
+
+.sidebar--collapsed .sidebar-item:hover {
+    transform: translateY(-1px);
+}
+
+.sidebar--collapsed .sidebar-item-label {
+    width: 0;
+    opacity: 0;
+}
+
+@media (max-width: 768px) {
+    .sidebar,
+    .sidebar--collapsed {
+        width: 100%;
+        max-width: 100dvw;
+        min-width: 0;
+        height: auto;
+        flex-direction: row;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+
+    .sidebar-brand {
+        min-height: auto;
+        padding: 9px 12px;
+        border-bottom: none;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .sidebar-brand-logo {
+        width: 48px;
+        height: 36px;
+    }
+
+    .sidebar-brand-role,
+    .sidebar-toggle {
+        display: none;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        padding: 8px 10px;
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sidebar-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .sidebar-item {
+        width: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        justify-content: center;
+        gap: 0;
+        padding: 0;
+        flex-shrink: 0;
+        border-radius: 14px;
+        scroll-snap-align: start;
+    }
+
+    .sidebar-item:hover {
+        transform: translateY(-1px);
+    }
+
+    .sidebar-item--active {
+        background: linear-gradient(135deg, rgba(59, 116, 196, 0.78), rgba(30, 163, 100, 0.52));
+        box-shadow: inset 0 -3px 0 rgba(255, 255, 255, 0.78);
+    }
+
+    .sidebar-item-label {
+        display: none;
+    }
+
+    .sidebar-item-icon {
+        width: 24px;
+        min-width: 24px;
+    }
+
+    .sidebar-item-icon svg {
+        width: 21px;
+        height: 21px;
+    }
+}
