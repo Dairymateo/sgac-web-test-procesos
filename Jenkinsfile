@@ -59,9 +59,9 @@ pipeline {
         stage('Deploy (Kubernetes/Minikube)') {
             steps {
                 echo 'Desplegando la imagen en Kubernetes...'
-                // Usamos stdin para pasar los manifiestos directamente al kubectl de minikube sin docker cp
-                sh 'cat k8s/deployment.yaml | docker exec -i minikube kubectl apply -f -'
-                sh 'cat k8s/service.yaml | docker exec -i minikube kubectl apply -f -'
+                // Usamos stdin y el kubeconfig interno del contenedor de minikube
+                sh 'cat k8s/deployment.yaml | docker exec -i minikube kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f -'
+                sh 'cat k8s/service.yaml | docker exec -i minikube kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f -'
             }
         }
 
