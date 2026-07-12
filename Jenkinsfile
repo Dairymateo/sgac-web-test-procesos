@@ -59,9 +59,9 @@ pipeline {
         stage('Deploy (Kubernetes/Minikube)') {
             steps {
                 echo 'Desplegando la imagen en Kubernetes...'
-                // Usamos stdin y el kubeconfig interno del contenedor de minikube
-                sh 'cat k8s/deployment.yaml | docker exec -i minikube kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f -'
-                sh 'cat k8s/service.yaml | docker exec -i minikube kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f -'
+                // Usamos stdin y apuntamos explícitamente a 127.0.0.1 para evitar errores de DNS en Minikube
+                sh 'cat k8s/deployment.yaml | docker exec -i minikube kubectl --kubeconfig /etc/kubernetes/admin.conf --server=https://127.0.0.1:8443 --insecure-skip-tls-verify apply -f -'
+                sh 'cat k8s/service.yaml | docker exec -i minikube kubectl --kubeconfig /etc/kubernetes/admin.conf --server=https://127.0.0.1:8443 --insecure-skip-tls-verify apply -f -'
             }
         }
 
