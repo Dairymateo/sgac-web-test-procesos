@@ -71,3 +71,6 @@ export default defineConfig([
   },
 ])
 ```
+
+## Jenkins CI/CD Testing
+Prueba de trigger automatico con Poll SCM.
