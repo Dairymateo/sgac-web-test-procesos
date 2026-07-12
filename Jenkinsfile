@@ -73,7 +73,7 @@ pipeline {
                     def MINIKUBE_IP = sh(script: "docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' minikube", returnStdout: true).trim()
                     
                     // Ejecutamos ZAP (con bandera -I para que no falle el pipeline si encuentra alertas de bajo nivel)
-                    sh "docker run --rm -t owasp/zap2docker-stable zap-baseline.py -t http://${MINIKUBE_IP}:30080 -I"
+                    sh "docker run --rm -t zaproxy/zap-stable zap-baseline.py -t http://${MINIKUBE_IP}:30080 -I"
                 }
             }
         }
