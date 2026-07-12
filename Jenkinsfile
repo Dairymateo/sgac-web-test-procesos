@@ -59,14 +59,22 @@ pipeline {
         stage('Deploy (Kubernetes/Minikube)') {
             steps {
                 echo 'Desplegando la imagen en Kubernetes...'
-                // sh 'kubectl apply -f k8s/' (Lo crearemos en el siguiente paso)
+                // Usamos el acceso a Docker para aplicar los manifiestos directamente en Minikube
+                sh 'docker cp k8s minikube:/tmp/k8s'
+                sh 'docker exec minikube kubectl apply -f /tmp/k8s/'
             }
         }
 
         stage('DAST (OWASP ZAP)') {
             steps {
-                echo 'Ejecutando pruebas dinámicas de seguridad...'
-                // Lanzaremos la imagen Docker de ZAP contra la aplicación viva
+                echo 'Ejecutando pruebas dinámicas de seguridad (DAST)...'
+                script {
+                    // Obtenemos la IP del contenedor de minikube para poder atacarlo con ZAP
+                    def MINIKUBE_IP = sh(script: "docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' minikube", returnStdout: true).trim()
+                    
+                    // Ejecutamos ZAP (con bandera -I para que no falle el pipeline si encuentra alertas de bajo nivel)
+                    sh "docker run --rm -t owasp/zap2docker-stable zap-baseline.py -t http://${MINIKUBE_IP}:30080 -I"
+                }
             }
         }
     }

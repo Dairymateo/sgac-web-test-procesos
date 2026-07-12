@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sgac-web-test
+  labels:
+    app: sgac-web-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sgac-web-test
+  template:
+    metadata:
+      labels:
+        app: sgac-web-test
+    spec:
+      containers:
+      - name: sgac-web-test
+        image: dairymateo/sgac-web-test:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
