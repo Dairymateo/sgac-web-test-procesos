@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    // Disparador como codigo: sondea GitHub cada minuto en busca de nuevos commits
+    triggers {
+        pollSCM('* * * * *')
+    }
+
     environment {
         // ID de las credenciales que configuraste en Jenkins
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
@@ -104,6 +109,20 @@ pipeline {
                     archiveArtifacts artifacts: 'zap-report.txt', allowEmptyArchive: true
                 }
             }
+        }
+    }
+
+    // Post-acciones: se ejecutan al terminar el pipeline, segun su resultado
+    post {
+        always {
+            echo 'Limpieza del entorno de trabajo...'
+            sh 'rm -rf node_modules dist coverage || true'
+        }
+        success {
+            echo 'El pipeline se completo exitosamente.'
+        }
+        failure {
+            echo 'El pipeline fallo, revisa los errores en la consola.'
         }
     }
 }
