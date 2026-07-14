@@ -22,6 +22,14 @@ pipeline {
                 sh 'npm ci'
                 echo 'Construyendo el proyecto...'
                 sh 'npm run build'
+                echo 'Ejecutando pruebas (Vitest) con cobertura...'
+                // Genera coverage/lcov.info, que SonarQube usa para medir cobertura
+                sh 'npm run coverage'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'coverage/lcov.info', allowEmptyArchive: true
+                }
             }
         }
 
@@ -56,6 +64,20 @@ pipeline {
             }
         }
 
+        stage('Artifact Integrity (Trivy)') {
+            steps {
+                echo 'Validando integridad del artefacto: escaneo de vulnerabilidades en la imagen Docker...'
+                // Trivy descarga la imagen desde Docker Hub y busca CVEs en el SO base y dependencias.
+                // --exit-code 0: el escaneo es informativo; el reporte queda archivado como evidencia.
+                sh "docker run --rm aquasec/trivy:latest image --severity HIGH,CRITICAL --exit-code 0 --timeout 10m ${DOCKER_IMAGE}:${DOCKER_TAG} | tee trivy-report.txt"
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'trivy-report.txt', allowEmptyArchive: true
+                }
+            }
+        }
+
         stage('Deploy (Kubernetes/Minikube)') {
             steps {
                 echo 'Desplegando la imagen en Kubernetes...'
@@ -73,7 +95,13 @@ pipeline {
                     def MINIKUBE_IP = sh(script: "docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' minikube", returnStdout: true).trim()
                     
                     // Ejecutamos ZAP (con bandera -I para que no falle el pipeline si encuentra alertas de bajo nivel)
-                    sh "docker run --rm --network minikube -t zaproxy/zap-stable zap-baseline.py -t http://${MINIKUBE_IP}:30080 -I"
+                    // La salida se guarda como evidencia del escaneo dinámico
+                    sh "docker run --rm --network minikube -t zaproxy/zap-stable zap-baseline.py -t http://${MINIKUBE_IP}:30080 -I | tee zap-report.txt"
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'zap-report.txt', allowEmptyArchive: true
                 }
             }
         }
